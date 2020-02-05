@@ -8,8 +8,8 @@ namespace NearnCSharpExtensionsTests
 {
     public class IEnumerableStringExtensionsTests
     {
-        [Fact(DisplayName = "CountCommonLeadingCharactersOnEach Should Succeed")]
-        public void CountCommonLeadingCharactersOnEach_Should_Succeed()
+        [Fact(DisplayName = "IndexOfAnyNotOnEach Should Succeed With Equal Leading Whitespace")]
+        public void IndexOfAnyNotOnEach_Should_Succeed_With_Equal_Leading_Whitespace()
         {
             var given = new List<string>
             {
@@ -18,33 +18,24 @@ namespace NearnCSharpExtensionsTests
                 "    four leading spaces"
             };
 
-            Assert.Equal(2, given.CountCommonLeadingCharactersOnEach(' '));
+            var expected = new List<int> { 4, 3, 5 };
+
+            Assert.Equal(expected, given.IndexOfAnyNotOnEach(" tf".ToCharArray()));
         }
 
-        [Fact(DisplayName = "CountCommonLeadingCharactersOnEach Should Succeed With No Leading Whitespace")]
-        public void CountCommonLeadingCharactersOnEach_Should_Succeed_With_No_Leading_Whitespace()
+        [Fact(DisplayName = "IndexOfNotOnEach Should Succeed With Equal Leading Whitespace")]
+        public void IndexOfNotOnEach_Should_Succeed_With_Equal_Leading_Whitespace()
         {
             var given = new List<string>
             {
-                "three leading spaces",
-                "two leading spaces",
-                "four leading spaces"
+                "   three leading spaces",
+                "  two leading spaces",
+                "    four leading spaces"
             };
 
-            Assert.Equal(0, given.CountCommonLeadingCharactersOnEach(' '));
-        }
+            var expected = new List<int> { 3, 2, 4 };
 
-        [Fact(DisplayName = "CountCommonLeadingCharactersOnEach Should Succeed With Equal Leading Whitespace")]
-        public void CountCommonLeadingCharactersOnEach_Should_Succeed_With_Equal_Leading_Whitespace()
-        {
-            var given = new List<string>
-            {
-                "three leading spaces",
-                "two leading spaces",
-                "four leading spaces"
-            };
-
-            Assert.Equal(0, given.CountCommonLeadingCharactersOnEach(' '));
+            Assert.Equal(expected, given.IndexOfNotOnEach(' '));
         }
 
         [Fact(DisplayName = "SubstringOnEach Should Succeed")]
@@ -78,6 +69,66 @@ namespace NearnCSharpExtensionsTests
             };
 
             Assert.Throws<ArgumentOutOfRangeException>(() => given.SubstringOnEach(999).ToList());
+        }
+
+        [Fact(DisplayName = "TrimStartSameAmountOnEach Should Succeed")]
+        public void TrimStartSameAmountOnEach_Should_Succeed()
+        {
+            var given = new List<string>
+            {
+                "   three leading spaces",
+                "  two leading spaces",
+                "    four leading spaces"
+            };
+
+            var expected = new List<string>
+            {
+                " three leading spaces",
+                "two leading spaces",
+                "  four leading spaces"
+            };
+
+            Assert.Equal(expected, given.TrimStartSameAmountOnEach());
+        }
+
+        [Fact(DisplayName = "TrimStartSameAmountOnEach Should Succeed With No Leading Whitespace")]
+        public void TrimStartSameAmountOnEach_Should_Succeed_With_No_Leading_Whitespace()
+        {
+            var given = new List<string>
+            {
+                "three leading spaces",
+                "two leading spaces",
+                "four leading spaces"
+            };
+
+            var expected = new List<string>
+            {
+                "three leading spaces",
+                "two leading spaces",
+                "four leading spaces"
+            };
+
+            Assert.Equal(expected, given.TrimStartSameAmountOnEach());
+        }
+
+        [Fact(DisplayName = "TrimStartSameAmountOnEach Should Succeed With Equal Leading Whitespace")]
+        public void TrimStartSameAmountOnEach_Should_Succeed_With_Equal_Leading_Whitespace()
+        {
+            var given = new List<string>
+            {
+                "  three leading spaces",
+                "  two leading spaces",
+                "  four leading spaces"
+            };
+
+            var expected = new List<string>
+            {
+                "three leading spaces",
+                "two leading spaces",
+                "four leading spaces"
+            };
+
+            Assert.Equal(expected, given.TrimStartSameAmountOnEach());
         }
     }
 }

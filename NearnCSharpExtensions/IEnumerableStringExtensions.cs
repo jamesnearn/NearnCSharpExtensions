@@ -5,10 +5,20 @@ namespace NearnCSharpExtensions
 {
     public static class IEnumerableStringExtensions
     {
-        public static int CountCommonLeadingCharactersOnEach(this IEnumerable<string> source, char leadingCharacter)
+        public static IEnumerable<int> IndexOfAnyNotOnEach(this IEnumerable<string> source, char[] value)
         {
-            // todo - handle \n with IEnumerable<char>
-            return source.Select(x => x.CountLeadingCharacters(leadingCharacter)).Min();
+            foreach (string s in source)
+            {
+                yield return s.IndexOfAnyNot(value);
+            }
+        }
+
+        public static IEnumerable<int> IndexOfNotOnEach(this IEnumerable<string> source, char value)
+        {
+            foreach (string s in source)
+            {
+                yield return s.IndexOfNot(value);
+            }
         }
 
         public static IEnumerable<string> SubstringOnEach(this IEnumerable<string> source, int startIndex)
@@ -17,6 +27,13 @@ namespace NearnCSharpExtensions
             {
                 yield return s.Substring(startIndex);
             }
+        }
+
+        public static IEnumerable<string> TrimStartSameAmountOnEach(this IEnumerable<string> source)
+        {
+            var charsToTrim = new char[] { ' ', '\n' };
+            var indexToTrimTo = source.IndexOfAnyNotOnEach(charsToTrim).Min();
+            return source.SubstringOnEach(indexToTrimTo);
         }
     }
 }
